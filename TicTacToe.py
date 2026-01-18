@@ -6,19 +6,20 @@ from signal import pause
 
 from board import Board, BOARD_VISUAL_START
 
-MIN_POS_MATRIX = 0
-MAX_POS_MATRIX = 6
-STEPS_MOVE = 3
+MIN_POS = 0
+MAX_POS = 2
+STEPS_MOVE = 1
 
-X_POS_START = 3
-Y_POS_START = 3
+X_POS_START = 1
+Y_POS_START = 1
 
+#Location player on gameboard
 x = X_POS_START
 y = Y_POS_START
 
 board = Board()
 
-def clamp(value, min_value=MIN_POS_MATRIX, max_value=MAX_POS_MATRIX):
+def clamp(value, min_value=MIN_POS, max_value=MAX_POS):
     return min(max_value, max(min_value, value))
 
 def pushed_up(event):
@@ -47,7 +48,7 @@ def pushed_middle(event):
     
         board.save_move_player(x, y)
         board.switch_player()
-        
+
         x = X_POS_START
         y = Y_POS_START
 

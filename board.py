@@ -23,6 +23,7 @@ MIN_SIZE_PLAYER = 1
 MAX_SIZE_PLAYER = 2
 DIFF_SIZE_PLAYER = MAX_SIZE_PLAYER - MIN_SIZE_PLAYER
 
+OFFSET_MATRIX = 3
 LEDS_PER_ROW = 8
 
 IS_PLAYER_X = True
@@ -42,18 +43,24 @@ class Board:
 	return X if self._is_player_x else O
     
     def move_player(self, x, y):
+	x_matrix = x * OFFSET_MATRIX
+	y_matrix = y * OFFSET_MATRIX
+    
 	color_player = self.get_color_player()
 	
-	self.sense.set_pixel(x, y, color_player)
-	self.sense.set_pixel(x + DIFF_SIZE_PLAYER, y + DIFF_SIZE_PLAYER, color_player)
+	self.sense.set_pixel(x_matrix, y_matrix, color_player)
+	self.sense.set_pixel(x_matrix + DIFF_SIZE_PLAYER, y_matrix + DIFF_SIZE_PLAYER, color_player)
     
     def save_move_player(self, x, y):
+	x_matrix = x * OFFSET_MATRIX
+	y_matrix = y * OFFSET_MATRIX
+    
 	color_player = self.get_color_player()
 	
-	list_pos_topleft = x + DIFF_SIZE_PLAYER + y * LEDS_PER_ROW
+	list_pos_topleft = x_matrix + DIFF_SIZE_PLAYER + y_matrix * LEDS_PER_ROW
 	self._board_visual [list_pos_topleft] = color_player
 	
-	list_pos_bottemright= x + (y + DIFF_SIZE_PLAYER) * LEDS_PER_ROW
+	list_pos_bottemright= x_matrix + (y_matrix + DIFF_SIZE_PLAYER) * LEDS_PER_ROW
 	self._board_visual [list_pos_bottemright] = color_player
     
     def draw(self):
