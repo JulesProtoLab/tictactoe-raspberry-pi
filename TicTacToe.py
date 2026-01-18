@@ -7,19 +7,19 @@ from signal import pause
 
 X = (255, 0, 0)
 O = (0, 255, 0)
-L = (0, 0, 255)
+L = (64, 64, 64)
 B = (0, 0, 0)
 D = (127, 127, 127)
 
 BORD_START = [              #List_Positions
-    D, B, L, B, B, L, B, B, #0 - 7
+    B, B, L, B, B, L, B, B, #0 - 7
     B, B, L, B, B, L, B, B, #8 - 15
     L, L, L, L, L, L, L, L, #16 - 23
     B, B, L, B, B, L, B, B, #24 - 31
     B, B, L, B, B, L, B, B, #32 - 39
     L, L, L, L, L, L, L, L, #40 - 47
     B, B, L, B, B, L, B, B, #48 - 55
-    B, B, L, B, B, L, B, D, #56 - 63
+    B, B, L, B, B, L, B, B, #56 - 63
 ]
 
 MIN_SIZE_PLAYER = 1
@@ -97,7 +97,7 @@ def main(args):
     sense.stick.direction_middle = pushed_middle
     sense.stick.direction_any = refresh
 
-    sense.low_light = True
+    sense.low_light = False
     
     refresh()
     pause()
