@@ -2,7 +2,7 @@
 
 from sense_hat import SenseHat
 
-# Used LED colors 
+# Used LED colors
 X = (255, 0, 0) # Player X
 O = (0, 255, 0)	# Player O
 L = (64, 64, 64) # Outline board
@@ -25,21 +25,30 @@ DIFF_SIZE_PLAYER = MAX_SIZE_PLAYER - MIN_SIZE_PLAYER
 
 LEDS_PER_ROW = 8
 
+IS_PLAYER_X = True
+
 class Board:
 
     def __init__(self):
 	self._board_visual = BOARD_VISUAL_START
+	self._is_player_x = IS_PLAYER_X
 	
 	self.sense = SenseHat()
+	
+    def switch_player(self):
+	self._is_player_x = not self._is_player_x 
+	
+    def get_color_player(self):
+	return X if self._is_player_x else O
     
-    def move_player(self, is_player_x, x, y):
-	color_player = X if is_player_x else O
+    def move_player(self, x, y):
+	color_player = self.get_color_player()
 	
 	self.sense.set_pixel(x, y, color_player)
 	self.sense.set_pixel(x + DIFF_SIZE_PLAYER, y + DIFF_SIZE_PLAYER, color_player)
     
-    def save_move_player(self, is_player_x, x, y):
-	color_player = X if is_player_x else O
+    def save_move_player(self, x, y):
+	color_player = self.get_color_player()
 	
 	list_pos_topleft = x + DIFF_SIZE_PLAYER + y * LEDS_PER_ROW
 	self._board_visual [list_pos_topleft] = color_player

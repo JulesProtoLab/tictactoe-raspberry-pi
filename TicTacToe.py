@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 from time import sleep
 from sense_hat import SenseHat, ACTION_PRESSED, ACTION_HELD, ACTION_RELEASED
@@ -16,7 +15,6 @@ Y_POS_START = 3
 
 x = X_POS_START
 y = Y_POS_START
-is_player_x = True
 
 board = Board()
 
@@ -42,23 +40,20 @@ def pushed_right(event):
     global x
     if event.action != ACTION_RELEASED:
         x = clamp(x + STEPS_MOVE)
-        
-def get_color_current_player():
-    return X if is_player_x else O
 
 def pushed_middle(event):
-    global x, y, bord_current, is_player_x
+    global x, y
     if event.action != ACTION_RELEASED:
     
-        board.save_move_player(is_player_x, x, y)
+        board.save_move_player(x, y)
+        board.switch_player()
         
-        is_player_x = False if is_player_x else True
         x = X_POS_START
         y = Y_POS_START
 
 def refresh():
     board.draw()
-    board.move_player(is_player_x, x, y)
+    board.move_player(x, y)
 
 def main(args):
     sense = SenseHat()
