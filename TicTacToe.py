@@ -4,7 +4,7 @@ from time import sleep
 from sense_hat import SenseHat, ACTION_PRESSED, ACTION_HELD, ACTION_RELEASED
 from signal import pause
 
-from board import Board, BOARD_VISUAL_START
+from board import Board
 
 MIN_POS = 0
 MAX_POS = 2
@@ -46,7 +46,7 @@ def pushed_middle(event):
     global x, y
     if event.action != ACTION_RELEASED:
     
-        board.save_move_player(x, y)
+        board.claim_spot_player(x, y)
         board.switch_player()
 
         x = X_POS_START
