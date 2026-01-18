@@ -1,64 +1,53 @@
 #!/usr/bin/env python
 
-from time import sleep
 from sense_hat import SenseHat, ACTION_PRESSED, ACTION_HELD, ACTION_RELEASED
 from signal import pause
 
 from board import Board
+from player import Player
 
-MIN_POS = 0
-MAX_POS = 2
-STEPS_MOVE = 1
-
-X_POS_START = 1
-Y_POS_START = 1
-
-#Location player on gameboard
-x = X_POS_START
-y = Y_POS_START
+MIN_COORD_GAME = 0
+MAX_COORD_GAME = 2
+STEPS_MOVE_PLAYER = 1
 
 board = Board()
+player = Player()
 
-def clamp(value, min_value=MIN_POS, max_value=MAX_POS):
+def clamp(value, min_value=MIN_COORD_GAME, max_value=MAX_COORD_GAME):
     return min(max_value, max(min_value, value))
 
 def pushed_up(event):
-    global y
     if event.action != ACTION_RELEASED:
-        y = clamp(y - STEPS_MOVE)
-
+        y = clamp(player.get_y() - STEPS_MOVE_PLAYER)
+        player.set_y(y)
+            
 def pushed_down(event):
-    global y
     if event.action != ACTION_RELEASED:
-        y = clamp(y + STEPS_MOVE)
+        y = clamp(player.get_y() + STEPS_MOVE_PLAYER)
+        player.set_y(y)
 
 def pushed_left(event):
-    global x
     if event.action != ACTION_RELEASED:
-        x = clamp(x - STEPS_MOVE)
+        x = clamp(player.get_x() - STEPS_MOVE_PLAYER)
+        player.set_x(x)
 
 def pushed_right(event):
-    global x
     if event.action != ACTION_RELEASED:
-        x = clamp(x + STEPS_MOVE)
+        x = clamp(player.get_x() + STEPS_MOVE_PLAYER)
+        player.set_x(x)
 
 def pushed_middle(event):
-    global x, y
     if event.action != ACTION_RELEASED:
-    
-        board.claim_spot_player(x, y)
-        board.switch_player()
-
-        x = X_POS_START
-        y = Y_POS_START
+        board.claim_spot(player)
+        player.next()
 
 def refresh():
     board.draw()
-    board.move_player(x, y)
+    board.move(player)
 
 def main(args):
     sense = SenseHat()
-    
+
     sense.stick.direction_up = pushed_up
     sense.stick.direction_down = pushed_down
     sense.stick.direction_left = pushed_left
