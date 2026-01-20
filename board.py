@@ -27,9 +27,9 @@ MAX_SIZE_PLAYER = 2
 DIFF_SIZE_PLAYER = MAX_SIZE_PLAYER - MIN_SIZE_PLAYER
 OFFSET_GAME_TO_MATRIX = 3
 
-TOTAL_GAMEBOARD_POS = 9
-GAMEBOARD_CLAIMS_START = [PlayerName.UNDEFINED] * TOTAL_GAMEBOARD_POS
-LENGTH_GAMEBOARD = int(TOTAL_GAMEBOARD_POS ** 0.5)
+TOTAL_GAMEBOARD_SPOTS = 9
+GAMEBOARD_CLAIMS_START = [PlayerName.UNDEFINED] * TOTAL_GAMEBOARD_SPOTS
+LENGTH_GAMEBOARD = int(TOTAL_GAMEBOARD_SPOTS ** 0.5)
 
 sense = SenseHat()
 
@@ -54,19 +54,24 @@ class Board:
     
     def claim_spot(self, player):
 	x_game, y_game = player.get_coordinates()
-	name = player.get_name()
+	spot_to_claim = x_game + y_game * LENGTH_GAMEBOARD
+	
+	if self._gameboard_claims[spot_to_claim] == PlayerName.UNDEFINED:
+	    name = player.get_name()
+	    self._gameboard_claims[spot_to_claim] = name
+	    
+	    x_matrix = x_game * OFFSET_GAME_TO_MATRIX
+	    y_matrix = y_game * OFFSET_GAME_TO_MATRIX
+	    color = self.determine_color_player(name)
+	    
+	    list_pos_topleft = x_matrix + DIFF_SIZE_PLAYER + y_matrix * LEDS_PER_ROW
+	    list_pos_bottemright= x_matrix + (y_matrix + DIFF_SIZE_PLAYER) * LEDS_PER_ROW
+	    
+	    self._matrix_colors [list_pos_topleft] = color
+	    self._matrix_colors [list_pos_bottemright] = color
+	    return True
 
-	self._gameboard_claims[x_game + y_game * LENGTH_GAMEBOARD] = name
-	
-	x_matrix = x_game * OFFSET_GAME_TO_MATRIX
-	y_matrix = y_game * OFFSET_GAME_TO_MATRIX
-	color = self.determine_color_player(name)
-	
-	list_pos_topleft = x_matrix + DIFF_SIZE_PLAYER + y_matrix * LEDS_PER_ROW
-	list_pos_bottemright= x_matrix + (y_matrix + DIFF_SIZE_PLAYER) * LEDS_PER_ROW
-	
-	self._matrix_colors [list_pos_topleft] = color
-	self._matrix_colors [list_pos_bottemright] = color
+	return False
     
     def draw(self):
 	sense.clear()

@@ -38,8 +38,12 @@ def pushed_right(event):
 
 def pushed_middle(event):
     if event.action != ACTION_RELEASED:
-        board.claim_spot(player)
-        player.next()
+        is_succesfully_claimed = board.claim_spot(player)
+
+        if is_succesfully_claimed:
+            player.next()
+        else:
+            print("Nee =P")
 
 def refresh():
     board.draw()
