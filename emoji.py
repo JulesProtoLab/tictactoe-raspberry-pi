@@ -13,12 +13,12 @@ W = (128, 128, 128) #White
 X = (0, 0, 0) # None (LED off)
 
 # Both the eyes and the mouth are drawn on 4 rows of the LED-matrix
-# Combine the eyes and the mouth to draw a emoji which fills the LED-matrix
+# Combine the eyes and the mouth to draw a emoticon which fills the LED-matrix
 class _Eyes(Enum):
     FORWARD = [
         X, X, X, X, X, X, X, X,
-        X, Y, Y, X, X, Y, Y, X,
-        X, Y, C, X, X, C, Y, X,
+        X, X, Y, X, X, Y, X, X,
+        X, X, Y, X, X, Y, X, X,
         X, X, X, X, X, X, X, X
         ]
 
@@ -42,17 +42,18 @@ class _Mouth(Enum):
         X, X, X, X, X, X, X, X
     ]
     TONGUE = [
-        X, Y, Y, Y, Y, Y, Y, X,
-        X, X, R, R, R, R, X, X,
-        X, X, X, R, R, X, X, X,
+        X, Y, Y, Y, Y, Y, Y, Y,
+        X, X, X, X, Y, X, X, Y,
+        X, X, X, X, X, Y, Y, X,
         X, X, X, X, X, X, X, X
     ]
 
-class Emoji(Enum):
-    NEUTRAL = _Eyes.FORWARD.value + _Mouth.NEUTRAL.value
-    SMILING = _Eyes.FORWARD.value + _Mouth.SMILE.value
-    FROWNING = _Eyes.FORWARD.value + _Mouth.FROWN.value
-    JOKING = _Eyes.FORWARD.value + _Mouth.TONGUE.value
+# Reference for emoticons: 'https://en.wikipedia.org/wiki/List_of_emoticons'
+class Emoticon(Enum):
+    NEUTRAL = _Eyes.FORWARD.value + _Mouth.NEUTRAL.value # =|
+    SMILING = _Eyes.FORWARD.value + _Mouth.SMILE.value # =)
+    FROWNING = _Eyes.FORWARD.value + _Mouth.FROWN.value # =(
+    JOKING = _Eyes.FORWARD.value + _Mouth.TONGUE.value # =P
 
 #class EmojiAnimator:
     #def __init__(self):
@@ -66,7 +67,7 @@ def main(args):
     sense = SenseHat()
     sense.low_light = True
     
-    sense.set_pixels(Emoji.JOKING.value)
+    sense.set_pixels(Emoticon.JOKING.value)
 
 if __name__ == '__main__':
     import sys
