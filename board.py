@@ -33,6 +33,20 @@ LENGTH_GAMEBOARD = int(TOTAL_GAMEBOARD_SPOTS ** 0.5)
 
 sense = SenseHat()
 
+is_showcasing_bug = False
+MATRIX_COLORS_TEMP = [      #List_Positions
+    B, O, L, B, B, L, B, X, #0 - 7
+    O, B, L, B, B, L, X, B, #8 - 15
+    L, L, L, L, L, L, L, L, #16 - 23
+    B, B, L, B, O, L, B, B, #24 - 31
+    B, B, L, O, B, L, B, B, #32 - 39
+    L, L, L, L, L, L, L, L, #40 - 47
+    B, X, L, B, B, L, B, X, #48 - 55
+    X, B, L, B, B, L, X, B, #56 - 63
+]
+if is_showcasing_bug:
+    MATRIX_COLORS_START = MATRIX_COLORS_TEMP
+
 class Board:
     def __init__(self):
 	self._matrix_colors = MATRIX_COLORS_START
@@ -56,7 +70,7 @@ class Board:
 	x_game, y_game = player.get_coordinates()
 	spot_to_claim = x_game + y_game * LENGTH_GAMEBOARD
 	
-	if self._gameboard_claims[spot_to_claim] == PlayerName.UNDEFINED:
+	if is_showcasing_bug or self._gameboard_claims[spot_to_claim] == PlayerName.UNDEFINED:
 	    name = player.get_name()
 	    self._gameboard_claims[spot_to_claim] = name
 	    
